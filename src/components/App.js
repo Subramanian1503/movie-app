@@ -38,14 +38,17 @@ class App extends React.Component {
           </div>
 
           <div className="list">
-            {list.map((movie, index) => (
-              <MovieCard
-                movie={movie}
-                dispatch={this.props.store.dispatch}
-                key={`movie-${index}`}
-                isMovieFavourite={this.isMovieFavourite(movie)}
-              />
-            ))}
+            {list.map(
+              (movie, index) =>
+                !this.isMovieFavourite(movie) && (
+                  <MovieCard
+                    movie={movie}
+                    dispatch={this.props.store.dispatch}
+                    key={`movie-${index}`}
+                    isMovieFavourite={this.isMovieFavourite(movie)}
+                  />
+                )
+            )}
           </div>
         </div>
         {/* tabs */}
