@@ -3,7 +3,7 @@ import React from "react";
 import { data } from "../data";
 import Navbar from "./Navbar";
 import MovieCard from "./MovieCard";
-import { addMovies } from "../actions";
+import { addMovies, setShowFavourite } from "../actions";
 
 class App extends React.Component {
   componentDidMount() {
@@ -22,9 +22,17 @@ class App extends React.Component {
     return favourites.indexOf(movie) >= 0;
   };
 
+  changeSetFavourite(value) {
+    // Dispatch the ADD movies action to add data to the store
+    const { store } = this.props;
+    store.dispatch(setShowFavourite(value));
+  }
+
   render() {
     const { store } = this.props;
-    const { list } = store.getState();
+    const { list, favourites, showFavourites } = store.getState();
+
+    const movie_list = showFavourites ? favourites : list;
 
     return (
       <div className="App">
@@ -33,23 +41,34 @@ class App extends React.Component {
         {/* main container */}
         <div className="main">
           <div className="tabs">
-            <div className="tab">Movies</div>
-            <div className="tab">Favoutites</div>
+            <div
+              className={`tab ${showFavourites ? "" : "active-tabs"}`}
+              onClick={() => this.changeSetFavourite(false)}
+            >
+              Movies
+            </div>
+            <div
+              className={`tab ${showFavourites ? "active-tabs" : ""}`}
+              onClick={() => this.changeSetFavourite(true)}
+            >
+              Favoutites
+            </div>
           </div>
 
           <div className="list">
-            {list.map(
-              (movie, index) =>
-                !this.isMovieFavourite(movie) && (
-                  <MovieCard
-                    movie={movie}
-                    dispatch={this.props.store.dispatch}
-                    key={`movie-${index}`}
-                    isMovieFavourite={this.isMovieFavourite(movie)}
-                  />
-                )
-            )}
+            {movie_list.map((movie, index) => (
+              <MovieCard
+                movie={movie}
+                dispatch={this.props.store.dispatch}
+                key={`movie-${index}`}
+                isMovieFavourite={this.isMovieFavourite(movie)}
+              />
+            ))}
           </div>
+
+          {movie_list.length === 0 && (
+            <div className="no-movies">No movies to display!</div>
+          )}
         </div>
         {/* tabs */}
         {/* movie cards */}
