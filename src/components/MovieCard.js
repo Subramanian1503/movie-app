@@ -3,6 +3,13 @@ import React from "react";
 import { addFavourite, unFavourite } from "../actions";
 
 class MovieCard extends React.Component {
+  componentDidMount() {
+    const { store } = this.props;
+    store.subscribe(() => {
+      this.forceUpdate();
+    });
+  }
+
   handleFavouriteClick = () => {
     // Get the movie which needs to be marked as favourite
     const movie = this.props.movie;

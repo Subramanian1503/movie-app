@@ -57,15 +57,17 @@ class App extends React.Component {
           </div>
 
           <div className="list">
-            {movie_list.length === 0 && (
+            {movie_list && movie_list.length === 0 && (
               <div className="no-movies">No movies to display!</div>
             )}
+            {console.log(movie_list)}
             {movie_list.map((movie, index) => (
               <MovieCard
                 movie={movie}
                 dispatch={this.props.store.dispatch}
                 key={`movie-${index}`}
                 isMovieFavourite={this.isMovieFavourite(movie)}
+                store={store}
               />
             ))}
           </div>
