@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
 
 import "./index.css";
 import App from "./components/App";
@@ -17,16 +18,16 @@ const logger =
     next(action);
   };
 
-const thunk =
-  ({ dispatch, getState }) =>
-  (next) =>
-  (action) => {
-    if (typeof action == "function") {
-      action(dispatch);
-      return;
-    }
-    next(action);
-  };
+// const thunk =
+//   ({ dispatch, getState }) =>
+//   (next) =>
+//   (action) => {
+//     if (typeof action == "function") {
+//       action(dispatch);
+//       return;
+//     }
+//     next(action);
+//   };
 
 const store = createStore(rootReducer, applyMiddleware(logger, thunk));
 
