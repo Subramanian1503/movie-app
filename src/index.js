@@ -11,11 +11,24 @@ const logger =
   ({ dispatch, getState }) =>
   (next) =>
   (action) => {
-    console.log("ACTION_TYPE", action);
+    if (typeof action !== "function") {
+      console.log("ACTION_TYPE", action);
+    }
     next(action);
   };
 
-const store = createStore(rootReducer, applyMiddleware(logger));
+const thunk =
+  ({ dispatch, getState }) =>
+  (next) =>
+  (action) => {
+    if (typeof action == "function") {
+      action(dispatch);
+      return;
+    }
+    next(action);
+  };
+
+const store = createStore(rootReducer, applyMiddleware(logger, thunk));
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

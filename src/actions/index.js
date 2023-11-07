@@ -39,3 +39,20 @@ export const setShowFavourite = (value) => {
     value,
   };
 };
+
+export const handleMovieSearch = (movieName) => {
+  const fetchURL = `https://www.omdbapi.com/?apikey=f27ad85c&t=${movieName}`;
+  // Fetch the movie name result using OMDB API
+  return function fetchMovieInfo(dispatch) {
+    fetch(fetchURL)
+      .then((response) => response.json())
+      .then((movieResult) => {
+        console.log("Movie_Result", movieResult);
+        // dispatch({
+        //   type: "ADD_SEARCH_RESULT",
+        //   movieResult: movieResult,
+        // });
+      });
+  };
+  // Store the results in redux store
+};

@@ -38,7 +38,7 @@ class App extends React.Component {
     return (
       <div className="App">
         {/* nav bar component */}
-        <Navbar />
+        <Navbar dispatch={this.props.store.dispatch}/>
         {/* main container */}
         <div className="main">
           <div className="tabs">
