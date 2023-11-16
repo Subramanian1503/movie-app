@@ -5,6 +5,7 @@ import {
   ADD_FAVOURITE,
   REMOVE_FAVOURITE,
   SET_SHOW_FAVOURITE,
+  ADD_MOVIE_SEARCH_RESULT,
 } from "../actions";
 
 // Defining the initial state
@@ -19,7 +20,7 @@ export function movies(state = initialMoviesState, action) {
     case ADD_MOVIES:
       return {
         ...state,
-        list: action.movies,
+        list: [...action.movies, ...state.list],
       };
     case ADD_FAVOURITE:
       return {
@@ -51,11 +52,26 @@ export function movies(state = initialMoviesState, action) {
 // Define a initial state for search
 const initialSearchState = {
   result: {},
+  showSearchResults: false,
 };
 
 // Create a reducer for search
 export function search(state = initialSearchState, action) {
-  return state;
+  switch (action.type) {
+    case ADD_MOVIE_SEARCH_RESULT:
+      return {
+        ...state,
+        result: action.movieResult,
+        showSearchResults: true,
+      };
+    case ADD_MOVIES:
+      return {
+        ...state,
+        showSearchResults: false,
+      };
+    default:
+      return state;
+  }
 }
 
 // Define a inital state for root reducer

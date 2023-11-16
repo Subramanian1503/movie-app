@@ -1,12 +1,14 @@
 import React from "react";
 
 import { data } from "../data";
-import Navbar from "./Navbar";
+import NavBar from "./Navbar";
 import MovieCard from "./MovieCard";
 import { addMovies, setShowFavourite } from "../actions";
+import { StoreContext } from "..";
 
 class App extends React.Component {
   componentDidMount() {
+    console.log("componentDidMount");
     const { store } = this.props;
     // get the data from the API call
     // Subscribe the current component to the store, so that when the store state changes it will re render again
@@ -14,6 +16,7 @@ class App extends React.Component {
       this.forceUpdate();
     });
     // Dispatch the ADD movies action to add data to the store
+    console.log("Data", data);
     store.dispatch(addMovies(data));
   }
 
@@ -30,15 +33,14 @@ class App extends React.Component {
 
   render() {
     const { store } = this.props;
-    const { movies } = store.getState();
+    const { movies, search } = store.getState();
     const { list, favourites, showFavourites } = movies;
 
     const movie_list = showFavourites ? favourites : list;
-
     return (
       <div className="App">
         {/* nav bar component */}
-        <Navbar dispatch={this.props.store.dispatch}/>
+        <NavBar dispatch={store.dispatch} search={search} />
         {/* main container */}
         <div className="main">
           <div className="tabs">
@@ -60,11 +62,11 @@ class App extends React.Component {
             {movie_list && movie_list.length === 0 && (
               <div className="no-movies">No movies to display!</div>
             )}
-            {console.log(movie_list)}
+            {console.log("Movie list", movie_list)}
             {movie_list.map((movie, index) => (
               <MovieCard
                 movie={movie}
-                dispatch={this.props.store.dispatch}
+                dispatch={store.dispatch}
                 key={`movie-${index}`}
                 isMovieFavourite={this.isMovieFavourite(movie)}
                 store={store}
@@ -79,4 +81,12 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const AppWrapper = () => {
+  return (
+    <StoreContext.Consumer>
+      {(store) => <App store={store} />}
+    </StoreContext.Consumer>
+  );
+};
+
+export default AppWrapper;

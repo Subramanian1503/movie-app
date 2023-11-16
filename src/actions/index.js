@@ -10,6 +10,7 @@ export const ADD_MOVIES = "ADD_MOVIES";
 export const ADD_FAVOURITE = "ADD_FAVOURITE";
 export const REMOVE_FAVOURITE = "REMOVE_FAVOURITE";
 export const SET_SHOW_FAVOURITE = "SET_SHOW_FAVOURITE";
+export const ADD_MOVIE_SEARCH_RESULT = 'ADD_MOVIE_SEARCH_RESULT';
 
 // Action creators
 export const addMovies = (movies) => {
@@ -46,13 +47,17 @@ export const handleMovieSearch = (movieName) => {
   return function fetchMovieInfo(dispatch) {
     fetch(fetchURL)
       .then((response) => response.json())
-      .then((movieResult) => {
-        console.log("Movie_Result", movieResult);
-        // dispatch({
-        //   type: "ADD_SEARCH_RESULT",
-        //   movieResult: movieResult,
-        // });
+      .then((movieResults) => {
+        console.log("Movie results", movieResults);
+        // Store the results in redux store
+        dispatch(addMovieSearchResults(movieResults));
       });
   };
-  // Store the results in redux store
+};
+
+const addMovieSearchResults = (movieResult) => {
+  return {
+    type: ADD_MOVIE_SEARCH_RESULT,
+    movieResult: movieResult,
+  };
 };
