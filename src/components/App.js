@@ -81,12 +81,22 @@ class App extends React.Component {
   }
 }
 
-const AppWrapper = () => {
-  return (
-    <StoreContext.Consumer>
-      {(store) => <App store={store} />}
-    </StoreContext.Consumer>
-  );
+// const AppWrapper = () => {
+//   return (
+//     <StoreContext.Consumer>
+//       {(store) => <App store={store} />}
+//     </StoreContext.Consumer>
+//   );
+// };
+const callback = (state) => {
+  return {
+    movies: state.movies,
+    search: state.search,
+  };
 };
 
-export default AppWrapper;
+// 1st argument -> provide a callback function which will return required data from the core store
+// 2nd argument -> provide the component to which the required data can be connected
+const ConnectedAppComponent = connect(callback)(App);
+
+export default ConnectedAppComponent;
